@@ -19,7 +19,7 @@ This project includes stunning **rotating neon ring animation**, **responsive la
 ## 📸 Preview
 
 ![Calculator Preview](preview.png)  
-*(Add your screenshot here and rename it `preview.png`)*
+
 
 ---
 
@@ -29,3 +29,8 @@ This project includes stunning **rotating neon ring animation**, **responsive la
    ```bash
    git clone https://github.com/your-username/neon-ring-calculator.git
    cd neon-ring-calculator
+  
+## 🤝 Connect with Me
+
+- [LinkedIn](https://www.linkedin.com/in/pritam-lendale-398172353?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
+- [GitHub](https://github.com/PL7822?tab=repositories)
