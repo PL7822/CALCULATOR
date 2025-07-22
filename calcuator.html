@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>CALCULATOR </h1>
+    <div class="calculator">
+      <div class="display" id="display">0</div>
+      <div class="buttons">
+        <button class="btn op" onclick="playSound(); clearDisplay()">AC</button>
+        <button class="btn op" onclick="playSound(); deleteLast()">DEL</button>
+        <button class="btn op" onclick="playSound('operator'); append('%')">%</button>
+        <button class="btn op" onclick="playSound('operator'); append('/')">/</button>
+
+        <button class="btn" onclick="playSound(); append('7')">7</button>
+        <button class="btn" onclick="playSound(); append('8')">8</button>
+        <button class="btn" onclick="playSound(); append('9')">9</button>
+        <button class="btn op" onclick="playSound('operator'); append('*')">*</button>
+
+        <button class="btn" onclick="playSound(); append('4')">4</button>
+        <button class="btn" onclick="playSound(); append('5')">5</button>
+        <button class="btn" onclick="playSound(); append('6')">6</button>
+        <button class="btn op" onclick="playSound('operator'); append('+')">+</button>
+
+        <button class="btn" onclick="playSound(); append('1')">1</button>
+        <button class="btn" onclick="playSound(); append('2')">2</button>
+        <button class="btn" onclick="playSound(); append('3')">3</button>
+        <button class="btn op" onclick="playSound('operator'); append('-')">-</button>
+
+        <button class="btn" onclick="playSound(); toggleSign()">±</button>
+        <button class="btn" onclick="playSound(); append('0')">0</button>
+        <button class="btn" onclick="playSound(); append('.')">.</button>
+        <button class="btn equal" onclick="playSound('equal'); calculate()">=</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔊 Audio Elements -->
+  <audio id="sound-default" src="saund1.mp3"></audio>
+  <audio id="sound-operator" src="saund2.mp3"></audio>
+  <audio id="sound-equal" src="saund3.mp3"></audio>
+
+  <script>
+    let display = document.getElementById('display');
+    let currentInput = '';
+
+    function playSound(type = 'default') {
+      let sound;
+      if (type === 'operator') {
+        sound = document.getElementById('sound-operator');
+      } else if (type === 'equal') {
+        sound = document.getElementById('sound-equal');
+      } else {
+        sound = document.getElementById('sound-default');
+      }
+
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function append(value) {
+      if (display.innerText === '0' || display.innerText === 'Error') {
+        currentInput = value;
+      } else {
+        currentInput += value;
+      }
+      display.innerText = currentInput;
+    }
+
+    function clearDisplay() {
+      currentInput = '';
+      display.innerText = '0';
+    }
+
+    function deleteLast() {
+      currentInput = currentInput.slice(0, -1);
+      display.innerText = currentInput || '0';
+    }
+
+    function calculate() {
+      try {
+        currentInput = eval(currentInput).toString();
+        display.innerText = currentInput;
+      } catch (e) {
+        display.innerText = 'Error';
+        currentInput = '';
+      }
+    }
+
+    function toggleSign() {
+      if (currentInput.startsWith('-')) {
+        currentInput = currentInput.substring(1);
+      } else {
+        currentInput = '-' + currentInput;
+      }
+      display.innerText = currentInput;
+    }
+  </script>
+
+  <style>
+   body {
+  margin: 0;
+  background: #111;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+h1 {
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+  margin-left: 20px;
+  text-shadow: #fdbbef 0px 0px 10px, #6b6e6e 0px 0px 20px;
+}
+
+.calculator {
+  background: #1c1c1c;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 0 20px #00fff7;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated Border */
+.calculator::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(60deg, #00fff7, #ff00c8, #00fff7, #ff00c8);
+  animation: rotateLight 4s linear infinite;
+  z-index: 1;
+  opacity: 0.2;
+}
+
+/* Blur light mask */
+.calculator::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: #1c1c1c;
+  border-radius: 18px;
+  z-index: 2;
+}
+
+/* Make sure actual content is on top */
+.calculator * {
+  position: relative;
+  z-index: 3;
+}
+
+@keyframes rotateLight {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+.display {
+  background: rgba(34, 34, 34, 0.95);
+  padding: 15px;
+  font-size: 2rem;
+  text-align: right;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 60px);
+  gap: 10px;
+}
+
+.btn {
+  background: rgba(51, 51, 51, 0.95);
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: inset 2px 2px 5px #000, inset -2px -2px 5px #222;
+  transition: 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.1); /* subtle white tint */
+  transform: scale(1.1); /* little zoom on hover */
+  box-shadow: 0 0 10px #898c8c, 0 0 15px #afbebc; /* glow effect */
+}
+
+
+.op {
+  color: #ffd700;
+}
+
+.equal {
+  background: #f14c4cb8;
+  color: white;
+}
+
+  </style>
+</body>
+</html>
